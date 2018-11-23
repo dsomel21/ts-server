@@ -1,18 +1,31 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  BeforeInsert,
+  BaseEntity
+} from "typeorm";
+import * as uuidv4 from "uuid/v4";
 
 @Entity()
-export class User {
+// BaseEntity gives you .crud abilities
+export class User extends BaseEntity {
+  // Instead of 1, 2, 3 => 34oijdsf9809fid, aosfd98u4h2ih
+  @PrimaryColumn("uuid")
+  id: string;
 
-    @PrimaryGeneratedColumn()
-    id: number;
+  @Column("varchar", { length: 255 })
+  email: string;
 
-    @Column()
-    firstName: string;
+  @Column("varchar", { length: 255 })
+  firstName: string;
 
-    @Column()
-    lastName: string;
+  @Column("text")
+  password: string;
 
-    @Column()
-    age: number;
-
+  // Automatically handles the id. because this function will run before inserting id
+  @BeforeInsert()
+  addId() {
+    this.id = uuidv4();
+  }
 }
