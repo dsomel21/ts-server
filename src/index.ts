@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { GraphQLServer } from "graphql-yoga";
+import { resolvers } from "./resolvers";
+import { importSchema } from "graphql-import";
 
 createConnection()
   .then(async connection => {
@@ -8,17 +10,8 @@ createConnection()
   })
   .catch(error => console.log(error));
 
-const typeDefs = `
-  type Query {
-    hello(name: String): String!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    hello: (_: any, { name }: any) => `Hello ${name || "World"}`
-  }
-};
+// GraphQL Schema Situation
+const typeDefs = importSchema("schema.graphql");
 
 const server = new GraphQLServer({ typeDefs, resolvers });
 server.start(() => console.log("Server is running on localhost:4000"));
