@@ -1,3 +1,9 @@
+# Nice to use .graphql file since it also colours our syntax, vs. using a string
 type Query {
   hello(name: String): String!
+}
+
+# We are gonna take a few params
+type Mutation {
+  register(email: String!, password: String!): Boolean
 }
